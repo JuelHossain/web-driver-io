@@ -1,12 +1,11 @@
-// Practice E-Commerce Site – Automation Bro
-// https://practice.automationbro.com/
+import HomePage from "../pages/home-pages.js";
 
 describe('Home', () => {
 
   it("Open Browser & assert The Title", async () => {
     //opening browser
     
-    await browser.url("https://practice.automationbro.com");
+    await HomePage.open();
     //asserting the title
     await expect(browser).toHaveTitle(
       "Practice E-Commerce Site – Automation Bro"
@@ -15,49 +14,44 @@ describe('Home', () => {
   
  it("assert the url", async () => {
   //open url
-  await browser.url("https://practice.automationbro.com/about");
+   await HomePage.open();
 
   //assert the url
   await expect(browser).toHaveUrl(
-    "https://practice.automationbro.com/about/"
+    "https://practice.automationbro.com/"
   );
  });
 
  it('click get started button & assert url contains get-started text', async () => {
     //Open Home Page 
-    await browser.url("https://practice.automationbro.com");
+   await HomePage.open();
 
-    //click get started button
-   await $('#get-started').waitForClickable({timeout:1000,timeOutMsg:'could notmake the button clckable sorry.'})
-    await $('#get-started').click();
+    //Wait for button to be clcickable
+   await HomePage.btnGetStarted.waitForClickable();
+   
+   //click the button
+    await HomePage.btnGetStarted.click();
 
     //assert url contins get-started text
-    await expect(browser).toHaveUrlContaining('get-started');
+    expect(browser).toHaveUrlContaining('get-started');
  });
   
   it("click on logo && assert the url doesn't contain the get-started text", async () => {
 
     //open browser
-    await browser.url('https://practice.automationbro.com');
+    await HomePage.open();
 
     //click on logo
-    await $(`//img[@alt="Practice E-Commerce Site"]`).click();
+    await HomePage.logo.click();
 
     //assert the url doesn't contain the get-started button
-    await expect(browser).not.toHaveUrlContaining('get-started');
+   expect(browser).not.toHaveUrlContaining('get-started');
   });
-  it('Find heding element & assert the text', async () => {
+  it('assert the Heading text', async () => {
     //open url
-    await browser.url('https://practice.automationbro.com');
-
-    //find heading element
-    const heading = await $('.elementor-widget-container h1');
-
-    //get text from the element
-    const headingText = await heading.getText();
+    await HomePage.open();
 
     //assert the text
-    // await expect(headingText).toEqual('Think different. Make different.');
-    await expect(heading).toHaveText("Think different. Make different.");
+    await expect(HomePage.heading).toHaveText("Think different. Make different.");
   });
 }); 
