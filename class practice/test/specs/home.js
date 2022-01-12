@@ -42,7 +42,7 @@ describe('Home', () => {
     await HomePage.open();
 
     //click on logo
-    await HomePage.logo.click();
+    await HomePage.navBar.logo.click();
 
     //assert the url doesn't contain the get-started button
    expect(browser).not.toHaveUrlContaining('get-started');

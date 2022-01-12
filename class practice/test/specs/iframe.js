@@ -1,14 +1,19 @@
+import IFrame from '../pages/iframe-pages.js';
+
 describe('iframe testing', () => {
   it('working with iframe', async () => {
     //opening browser
-    await browser.url("/iframe-sample/");
+    await IFrame.open();
 
+    // switching to iframe
+    await browser.switchToFrame(await IFrame.iframe);
 
-    const iframe = await $("#advanced_iframe");
-    await browser.switchToFrame(iframe);
-
-    await expect($(".ugb-cta__item h1 strong")).toHaveText(
+    await expect(IFrame.iframeHeader).toHaveText(
       "WebdriverIO – Complete Beginner Course 2021"
     );
+
+    await browser.switchToParentFrame();
+
+    await expect(IFrame.pageHeader).toHaveText('IFrame Sample');
   })
 });

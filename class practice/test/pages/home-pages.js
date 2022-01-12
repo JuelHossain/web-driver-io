@@ -1,3 +1,5 @@
+import NavBar from './components/nav-comp.js';
+
 class HomePage  {
   open(){
     return browser.url("/");
@@ -5,11 +7,11 @@ class HomePage  {
   get btnGetStarted() {
     return $("#get-started");
   }
-  get logo() {
-    return $(`//img[@alt="Practice E-Commerce Site"]`);
-  }
   get heading() {
     return $(".elementor-widget-container h1");
+  }
+  get navBar() {
+    return NavBar;
   }
 }
 
