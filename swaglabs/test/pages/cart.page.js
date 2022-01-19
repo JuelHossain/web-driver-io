@@ -1,5 +1,8 @@
 
 class Cart{
+  get cartTitle() {
+    return $('.title');
+  }
   get cartSize() {
     return $('[class*=badge]')
   }
@@ -49,30 +52,27 @@ class Cart{
     await this.checkoutButton.click();
     await this.continue.click();
     await expect(this.error).toHaveText("Error: First Name is required");
-    await this.firsName.setValue('juel');
-    await this.lastName.setValue('hossain');
-    await this.postalCode.setValue(1216);
+  }
+  async giveInfo(firstName, lastName, postalCode) {
+    await this.firsName.setValue(firstName);
+    await this.lastName.setValue(lastName);
+    await this.postalCode.setValue(postalCode);
     await this.continue.click();
   }
   async checkPrice() {
-    const item = this.itemPrice;
+    const item = await this.itemPrice;
     let itemPrice = 0;
-    const itemPrices = [];
-    await item.forEach(price => {
-      itemPrices.push(price.getValue());
-      console.log(itemPrices)
-      console.log('this is the price');
-    });
-    console.log(`itemPrices${itemPrices}`);
-    await itemPrices.forEach(price => {
-      itemPrice += price;
-    })
-    console.log(itemPrices);
-    await expect(this.itemTotalPrice).toHaveText('$'+itemPrice)
+    for (const p of item) {
+      let text = await p.getText();
+      let price = text.split('$')[1];
+      itemPrice += +(price);
+    }
+    await expect(this.itemTotalPrice).toHaveText(`Item total: $${itemPrice}`);
   }
+
   async checkInformation() {
-    await expect(this.informationValue[0]).toHaveTextContaining("SauceCard");
-    await expect(this.informationValue[1]).toHaveTextContaining(
+    expect(this.informationValue[0]).toHaveTextContaining("SauceCard");
+    expect(this.informationValue[1]).toHaveTextContaining(
       "EXPRESS DELIVERY"
     );
   }

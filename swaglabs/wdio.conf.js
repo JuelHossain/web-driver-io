@@ -1,11 +1,8 @@
-const drivers = {
-  chrome: { version: '98.0.4758.48' }, // https://chromedriver.chromium.org/
-  firefox: { version: '0.30.0' }, // https://github.com/mozilla/geckodriver/releases
-  chromiumedge: { version: '97.0.1072.62' } // https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
-}
-const allure = require("allure-commandline");
+
+import allure from "allure-commandline";
 exports.config = {
   //
+
   // ====================
   // Runner Configuration
   // ====================
@@ -58,10 +55,17 @@ exports.config = {
       // maxInstances can get overwritten per capability. So if you have an in-house Selenium
       // grid with only 5 firefox instances available you can make sure that not more than
       // 5 instances get started at a time.
-      maxInstances: 1,
-      //
+      // maxInstances: 1,
+      // //
+      // browserName: "chrome",
+      // acceptInsecureCerts: true,
       browserName: "chrome",
-      acceptInsecureCerts: true,
+    },
+    {
+      browserName: "firefox",
+    },
+    {
+      browserName: "edge"
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -72,6 +76,33 @@ exports.config = {
   // ===================
   // Test Configurations
   // ===================
+  test_settings: {
+    default: {},
+    chrome: {
+      desiredCapabilities: {
+        'browserName': 'chrome',
+        'browser_version': 'latest',
+        'os': 'Windows',
+        'os_version': '11'
+      }
+    },
+    edge: {
+      desiredCapabilities: {
+        'browserName': 'edge',
+        'browser_version': 'latest',
+        'os': 'Windows',
+        'os_version': '11'
+      }
+    },
+    firefox: {
+      desiredCapabilities: {
+        'browserName': 'firefox',
+        'browser_version': 'latest',
+        'os': 'Windows',
+        'os_version': '11'
+      }
+    }
+  },
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
@@ -115,7 +146,17 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
+  user: process.env.BROWSERSTACK_USERNAME,
+  key: process.env.BROWSERSTACK_ACCESS_KEY,
+  services: [
+    [
+      "browserstack",
+      {
+        browserstackLocal: false,
+      },
+    ],
+  ],
+  
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -298,7 +339,7 @@ exports.config = {
         resolve();
       });
     });
- },
+  },
   /**
    * Gets executed when a refresh happens.
    * @param {String} oldSessionId session ID of the old session
