@@ -149,10 +149,10 @@ exports.config = {
   key: process.env.BROWSERSTACK_ACCESS_KEY,
   services: [
     [
-      "chromedriver",
-      // {
-      //   browserstackLocal: false,
-      // },
+      "browserstack",
+      {
+        browserstackLocal: false,
+      },
     ],
   ],
   
